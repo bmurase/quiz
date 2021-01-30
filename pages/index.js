@@ -46,7 +46,7 @@ export default function Home() {
         <Footer />
       </QuizContainer>
 
-      <GitHubCorner propjectUrl="" />
+      <GitHubCorner projectUrl="https://github.com/bmurase/quiz" />
     </QuizBackground>
   )
 }
