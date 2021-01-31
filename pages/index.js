@@ -1,28 +1,28 @@
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import Widget from '../src/components/Widget';
 import Footer from '../src/components/Footer';
 import GitHubCorner from '../src/components/GitHubCorner';
 import QuizBackground from '../src/components/QuizBackground';
+import QuizContainer from '../src/components/QuizContainer';
 import QuizLogo from '../src/components/QuizLogo';
+import Input from '../src/components/Input';
+import Button from '../src/components/Button';
 
 import db from '../db.json';
 
-const QuizContainer = styled.div`
-  width: 100%;
-  max-width: 350px;
-  padding-top: 45px;
-  margin: auto 10%;
-
-  @media screen and (max-width: 500px) {
-    margin: auto;
-    padding: 15px;
-  }
-`;
-
 export default function Home() {
+  const router = useRouter();
+  const [name, setName] = useState('');
+
   return (
     <QuizBackground backgroundImage={db.bg}>
+      <Head>
+        <title>AluraQuiz</title>
+      </Head>
+
       <QuizContainer>
         <QuizLogo />
 
@@ -32,7 +32,21 @@ export default function Home() {
           </Widget.Header>
 
           <Widget.Content>
-            <p>{db.description}</p>
+            <form onSubmit={(event) => {
+              event.preventDefault();
+              router.push(`/quiz?name=${name}`);
+            }}
+            >
+              <Input
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Diz aí seu nome pra jogar :)"
+                value={name}
+              />
+              <Button type="submit" disabled={!name.length}>
+                {`Jogar ${name}`}
+              </Button>
+            </form>
           </Widget.Content>
         </Widget>
 
@@ -51,5 +65,5 @@ export default function Home() {
 
       <GitHubCorner projectUrl="https://github.com/bmurase/quiz" />
     </QuizBackground>
-  )
+  );
 }
